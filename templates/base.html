@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+    <head>
+        {% block head %}
+        <title>{% block title %}{% endblock %} - jamesonhm</title>
+        {% endblock %}
+    </head>
+
+    <body>
+        <h1>
+            JamesonHM trial site
+        </h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <footer>
+            {% block footer %}
+            &copy;Copywright 2017 by <a href='http://jamesonhm.pythonanywhere.com'>jamesonhm</a>
+            {% endblock %}
+        </footer>
+
+    </body>
+
+</html>
