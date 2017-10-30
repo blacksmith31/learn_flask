@@ -1,11 +1,11 @@
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, session
 import os
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-	return render_template('home.html')
+# @app.route('/')
+# def index():
+# 	return render_template('home.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -14,16 +14,26 @@ def login():
     if request.method == 'POST':
         if valid_login(request.form['username'], request.form['password']):
             flash('Successfully logged in!')
-            return redirect(url_for('welcome', username=request.form.get('username')))
+            session['username'] = request.form.get('username')
+            return redirect(url_for('welcome'))
         else:
             error = 'Incorrect username or password'
             return render_template('login.html', error=error)
     return render_template('login.html')
 
 
-@app.route('/login/<username>')
-def welcome(username):
-    return render_template('welcome.html', username=username)
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
+
+@app.route('/')
+def welcome():
+
+    if 'username' in session:
+        return render_template('welcome.html', username=session['username'])
+    else:
+        return redirect(url_for('login'))
 
 
 # helper function to decide "correct" login
@@ -39,7 +49,7 @@ def valid_login(username, password):
 #     return render_template('%s.html' % page_name)
 
 
-app.secret_key = 'SuperSecretKey'
+app.secret_key = '\xa6R?W0\xed\x16\x8d\xc7\n1\xb4:]@\x01q\xbc\x94\x0b\xf88x\xb0'
 if __name__ == '__main__':
     # host = os.getenv('IP', '0.0.0.0')
     # port = int(os.getenv('PORT', 5000))

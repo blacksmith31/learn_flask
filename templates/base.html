@@ -9,8 +9,13 @@
 
     <body>
         <h1>
+        <div id="logo">
+            <img src="{{ url_for('static', filename='my_face.jpg') }}" alt="my face" height="150px"/>
             JamesonHM trial site
+            </div>
+            <hr>
         </h1>
+
 
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -28,6 +33,7 @@
         </div>
 
         <footer>
+            <br>
             {% block footer %}
             &copy;Copywright 2017 by <a href='http://jamesonhm.pythonanywhere.com'>jamesonhm</a>
             {% endblock %}
