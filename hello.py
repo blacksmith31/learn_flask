@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, session
-
+import pymysql
 import os
 
 app = Flask(__name__)
@@ -42,7 +42,19 @@ def welcome():
 
 # helper function to decide "correct" login
 def valid_login(username, password):
-    if username == password:
+    MYSQL_DATABASE_HOST = 'jamesonhm.mysql.pythonanywhere-services.com'
+    MYSQL_DATABASE_USER = 'jamesonhm'
+    MYSQL_DATABASE_PASSWORD = 'learnFlask1'
+    MYSQL_DATABASE_DB = 'jamesonhm$my_flask_app'
+    conn = pymysql.connect(
+        host=MYSQL_DATABASE_HOST,
+        user=MYSQL_DATABASE_USER,
+        passwd=MYSQL_DATABASE_PASSWORD,
+        db=MYSQL_DATABASE_DB)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM user WHERE username="%s" AND password="%s"' % (username, password))
+    data = cursor.fetchone()
+    if data:
         return True
     else:
         return False
